@@ -7,13 +7,15 @@ node('linux') {
     sh 'docker build -t classweb:1.0 .'
   }
   stage('Test') {
-    sh 'docker stop classweb1||true'
-		sh 'docker rm classweb1||true'
-    sh 'docker run -d --name classweb1 -p 80:80 --env NGINX_PORT=80 classweb:1.0'
-		sh '''
-			CONTAINER_IP=$(docker inspect --format='{{.NetworkSettings.IPAddress}}
-		  curl -s $CONTAINER_IP
-		'''
+	sh 'docker stop classweb1||true'
+	sh 'docker rm classweb1||true'
     
+	sh 'docker run -d --name classweb1 -p 80:80 --env NGINX_PORT=80 classweb:1.0'
+	sh '''
+		CONTAINER_IP=$(docker inspect --format='{{.NetworkSettings.IPAddress}}
+		curl -s $CONTAINER_IP
+	'''
+    	sh 'docker stop classweb1'
+	sh 'docker rm classweb1'
   }
 }
