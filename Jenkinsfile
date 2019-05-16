@@ -12,7 +12,7 @@ node('linux') {
 		
 		sh 'docker run -d --name classweb1 -p 80:80 --env NGINX_PORT=80 classweb:1.0'
 		sh '''
-			CONTAINER_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(docker ps -q))
+			CONTAINER_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(docker ps -q -f name=classweb1))
 			curl -s $CONTAINER_IP
 		'''
 		
